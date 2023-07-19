@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DiseaseInformation"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Coffee leaf rust"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/imageViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• Coffee leaf rust primarily affects the leaves of coffee plants, leading to the development of distinctive yellow-orange powdery lesions on the underside of the leaves. "
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• These lesions represent the reproductive structures of the rust fungus. As the disease progresses, the infected leaves may turn brown, wither, and fall off, resulting in reduced photosynthesis and impaired growth of the coffee plant."
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <!-- Control measures -->
+            <TextView
+                android:id="@+id/control"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Control Measures"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:paddingTop="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• Controlling and managing coffee leaf rust involves a combination of cultural practices, such as pruning infected branches and removing fallen leaves, as well as the use of fungicides. "                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• Additionally, the development and cultivation of rust-resistant coffee varieties are crucial for long-term management and mitigation of the disease's impact on coffee production."
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+
+
+            <Button
+                android:id="@+id/btnLocateShops"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Locate Agrochemist Shops"
+                android:onClick="onLocateShopsClick"/>
+
+
+
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+
+</LinearLayout>

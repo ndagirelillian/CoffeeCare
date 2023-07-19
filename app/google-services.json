@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "764938124668",
+    "project_id": "coffeecare1",
+    "storage_bucket": "coffeecare1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:764938124668:android:27849b1403b19a11eb78f9",
+        "android_client_info": {
+          "package_name": "com.example.coffeecare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "764938124668-rjmplqcovu9r2hqk9kc2gd35gme0uvvo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMoinDeGxEHMzOepIXHy9Q_DY6yqukShM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "764938124668-rjmplqcovu9r2hqk9kc2gd35gme0uvvo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

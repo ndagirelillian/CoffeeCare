@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AgroEntry"
+    android:layout_marginTop="10dp">
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="INSERT AGRO CHEMICALS "
+        android:textSize="26dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        />
+
+    <EditText
+        android:id="@+id/Chemname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text"
+        android:layout_marginTop="24dp"
+        android:hint="Name of the product"
+        android:textSize="20dp" />
+
+    <EditText
+        android:id="@+id/description"
+        android:hint="Product description"
+        android:layout_marginTop="20dp"
+        android:textSize="20dp"
+        android:layout_below="@+id/Chemname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/industry"
+        android:hint="Shop Location "
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/description"
+        android:textSize="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/btninsertpdt"
+        android:layout_marginTop="20dp"
+        android:text="insert product"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/industry"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/btnviewpdt"
+        android:layout_marginTop="20dp"
+        android:text="view product"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/btninsertpdt"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>
