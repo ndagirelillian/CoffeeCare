@@ -78,7 +78,7 @@ public class LoginFarmer extends AppCompatActivity {
                                     Toast.makeText(LoginFarmer.this, "Login successful", Toast.LENGTH_SHORT).show();
                                     // Proceed to the farmer's activity
                                     // You can use startActivity() to launch the farmer's activity
-                                    Intent intent = new Intent(getApplicationContext(), Gallery.class);
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                     startActivity(intent);
                                     finish();
 

@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,12 +21,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-
 public class AgroCatelogue extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<User> list;
     DatabaseReference databaseReference;
     MyAdapter adapter;
+    Button locateshopbtn;
 
 
     @Override
@@ -39,7 +40,18 @@ public class AgroCatelogue extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_agro_catelogue);
+        setContentView(R.layout.activity_agro_catalogue);
+
+
+        locateshopbtn = findViewById(R.id.btnLocateShops);
+
+        locateshopbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locateAgrochemists();
+
+            }
+        });
 
         recyclerView = findViewById(R.id.rec_view);
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
@@ -63,6 +75,36 @@ public class AgroCatelogue extends AppCompatActivity {
 
             }
         });
-    }}
+    }
+    private void locateAgrochemists() {
+        DatabaseReference agrochemistsRef = FirebaseDatabase.getInstance().getReference().child("agrochemists");
+
+        agrochemistsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot agrochemistSnapshot : snapshot.getChildren()) {
+                    double agrochemistLatitude = agrochemistSnapshot.child("latitude").getValue(Double.class);
+                    double agrochemistLongitude = agrochemistSnapshot.child("longitude").getValue(Double.class);
+
+                    // Display the agrochemist's location on the map using the latitude and longitude
+                    // You can add markers or customize the map as needed.
+                    // Here, we're assuming you have a MapActivity to display the map and markers.
+                    Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                    intent.putExtra("agrochemist_latitude", agrochemistLatitude);
+                    intent.putExtra("agrochemist_longitude", agrochemistLongitude);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(AgroCatelogue.this, "Failed to retrieve agrochemists' locations.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}
+
+
+
 
 

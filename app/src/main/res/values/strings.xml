@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">CoffeeCare</string>
+
+    <string name="maps_api_key">AIzaSyD_BuN61ezt_F_YkKSKXTu4Hd4bwhZmpRE</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Home">home</string>
+
 </resources>

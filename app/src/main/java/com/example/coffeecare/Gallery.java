@@ -34,10 +34,7 @@ public class Gallery extends AppCompatActivity {
     Button chooseImage, captureImage, predict, moreinfo;
     TextView result;
     Bitmap bitmap;
-    DisplayMetrics displayMetrics;
 
-//    private static final  int IMAGE_PICK_CODE = 1000;
-//    private static final  int PERMISSION_CODE = 1001;
 
     @Override
     public void onBackPressed() {
@@ -125,11 +122,13 @@ public class Gallery extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        } else if (requestCode == 12) {
-            bitmap = (Bitmap) data.getExtras().get("data");
-            ImageView.setImageBitmap(bitmap);
-
+        }else if (requestCode == 12) {
+            if (data != null && data.getExtras() != null) {
+                bitmap = (Bitmap) data.getExtras().get("data");
+                ImageView.setImageBitmap(bitmap);
+            }
         }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
