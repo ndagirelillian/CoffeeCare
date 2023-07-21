@@ -25,7 +25,7 @@ public class DiseaseInformation extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivities(new Intent[]{new Intent(DiseaseInformation.this, Gallery.class)});
+        startActivities(new Intent[]{new Intent(DiseaseInformation.this, Help.class)});
         finish();
     }
 

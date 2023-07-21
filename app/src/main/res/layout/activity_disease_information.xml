@@ -72,15 +72,10 @@
                 android:id="@+id/viewChemicals"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="View Mechical products"
+                android:text="View Chemical products"
                 android:onClick="onLocateShopsClick"/>
 
-<!--            <Button-->
-<!--                android:id="@+id/btnLocateShops"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Locate Agrochemist Shops"-->
-<!--                android:onClick="onLocateShopsClick"/>-->
+
 
 
 

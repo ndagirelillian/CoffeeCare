@@ -115,7 +115,6 @@ public class PredictionFragment extends Fragment {
 
         super.onActivityResult(requestCode, resultCode, data);
     }
-
     private void getPrediction() {
         try {
             Model model = Model.newInstance(requireContext());
@@ -124,29 +123,41 @@ public class PredictionFragment extends Fragment {
 
             Model.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
-            int results = getMax(outputFeature0.getFloatArray());
 
-            if (results == 0) {
+            // Get the predicted class and its corresponding probability score
+            int predictedClass = getMax(outputFeature0.getFloatArray());
+            float confidence = outputFeature0.getFloatValue(predictedClass);
+
+            // Ensure the confidence is between 0 and 100%
+            float confidencePercentage = Math.min(Math.max(confidence, 0.0f), 1.0f) * 100;
+
+            if (predictedClass == 0) {
                 result.setText("Healthy");
-            } else if (results == 1) {
-                result.setText("Coffee Leaf Rust Detected");
+            } else if (predictedClass == 1) {
+                result.setText("Coffee Leaf Rust Detected with Confidence: " + confidencePercentage + "%");
                 moreinfo.setVisibility(View.VISIBLE);
                 moreinfo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(requireContext(), DiseaseInformation.class);
+                        Intent intent = new Intent(requireContext(), Help.class);
                         startActivity(intent);
                     }
                 });
-            } else if (results == 2) {
+            } else if (predictedClass == 2) {
                 result.setText("Not Coffee Leaf");
             } else {
                 Toast.makeText(requireContext(), "Prediction Error", Toast.LENGTH_SHORT).show();
             }
+
             model.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
+
+
+
 }
 
