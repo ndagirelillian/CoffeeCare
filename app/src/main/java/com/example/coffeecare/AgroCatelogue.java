@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,10 +30,12 @@ public class AgroCatelogue extends AppCompatActivity {
     Button locateshopbtn;
 
 
+
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivities(new Intent[]{new Intent(AgroCatelogue.this, AgroEntry.class)});
+        startActivities(new Intent[]{new Intent(AgroCatelogue.this, Help.class)});
         finish();
     }
 
@@ -44,6 +47,7 @@ public class AgroCatelogue extends AppCompatActivity {
 
 
         locateshopbtn = findViewById(R.id.btnLocateShops);
+
 
         locateshopbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +63,7 @@ public class AgroCatelogue extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new MyAdapter(this, list);
         recyclerView.setAdapter(adapter);
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -83,16 +88,21 @@ public class AgroCatelogue extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot agrochemistSnapshot : snapshot.getChildren()) {
-                    double agrochemistLatitude = agrochemistSnapshot.child("latitude").getValue(Double.class);
-                    double agrochemistLongitude = agrochemistSnapshot.child("longitude").getValue(Double.class);
+                    Double agrochemistLatitude = agrochemistSnapshot.child("latitude").getValue(Double.class);
+                    Double agrochemistLongitude = agrochemistSnapshot.child("longitude").getValue(Double.class);
 
-                    // Display the agrochemist's location on the map using the latitude and longitude
-                    // You can add markers or customize the map as needed.
-                    // Here, we're assuming you have a MapActivity to display the map and markers.
-                    Intent intent = new Intent(getApplicationContext(), MapActivity.class);
-                    intent.putExtra("agrochemist_latitude", agrochemistLatitude);
-                    intent.putExtra("agrochemist_longitude", agrochemistLongitude);
-                    startActivity(intent);
+                    if (agrochemistLatitude != null && agrochemistLongitude != null) {
+                        // Display the agrochemist's location on the map using the latitude and longitude
+                        // You can add markers or customize the map as needed.
+                        // Here, we're assuming you have a MapActivity to display the map and markers.
+                        Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                        intent.putExtra("agrochemist_latitude", agrochemistLatitude);
+                        intent.putExtra("agrochemist_longitude", agrochemistLongitude);
+                        startActivity(intent);
+                    } else {
+                        // Handle the case when latitude or longitude is null.
+                        Toast.makeText(AgroCatelogue.this, "Agrochemist's location data is missing.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
@@ -102,6 +112,7 @@ public class AgroCatelogue extends AppCompatActivity {
             }
         });
     }
+
 }
 
 

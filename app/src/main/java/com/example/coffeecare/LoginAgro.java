@@ -1,7 +1,5 @@
 package com.example.coffeecare;
 
-
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,13 +20,13 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginAgro extends AppCompatActivity {
     private EditText etAgrochemistEmail, etAgrochemistPassword;
     private Button btnAgrochemistLogin;
-    FirebaseAuth firebaseAuth;
-    TextView Clickregister;
+    private FirebaseAuth firebaseAuth;
+    private TextView Clickregister;
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivities(new Intent[]{new Intent(LoginAgro.this, Home.class)});
+        startActivity(new Intent(LoginAgro.this, Home.class));
         finish();
     }
 
@@ -42,6 +40,9 @@ public class LoginAgro extends AppCompatActivity {
         etAgrochemistPassword = findViewById(R.id.etAgrochemistPassword);
         btnAgrochemistLogin = findViewById(R.id.btnAgrochemistLogin);
 
+        // Initialize Firebase Authentication instance
+        firebaseAuth = FirebaseAuth.getInstance();
+
         Clickregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,24 +55,15 @@ public class LoginAgro extends AppCompatActivity {
         btnAgrochemistLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Retrieve the entered values
                 String email = etAgrochemistEmail.getText().toString().trim();
                 String password = etAgrochemistPassword.getText().toString().trim();
 
-                // Perform login process
-                if (TextUtils.isEmpty(email)) {
-                    etAgrochemistEmail.setError("Please enter your email");
-                    return;
-                }
-
-                if (TextUtils.isEmpty(password)) {
-                    etAgrochemistPassword.setError("Please enter your password");
+                if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+                    Toast.makeText(LoginAgro.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 // Use Firebase Authentication to authenticate the agrochemist
-                // Example code:
-                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
                 firebaseAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(LoginAgro.this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -80,8 +72,9 @@ public class LoginAgro extends AppCompatActivity {
                                     // Agrochemist login successful
                                     Toast.makeText(LoginAgro.this, "Login successful", Toast.LENGTH_SHORT).show();
                                     // Proceed to the agrochemist's activity
-                                    // You can use startActivity() to launch the agrochemist's activity
-                                    Intent intent = new Intent(getApplicationContext(), AgroEntry.class);
+                                    String userId = firebaseAuth.getCurrentUser().getUid();
+                                    Intent intent = new Intent(LoginAgro.this, AgroEntry.class);
+                                    intent.putExtra("USER_ID", userId);
                                     startActivity(intent);
                                     finish();
                                 } else {

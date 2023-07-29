@@ -17,18 +17,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-
 public class LoginFarmer extends AppCompatActivity {
     private EditText etFarmerEmail, etFarmerPassword;
     private Button btnFarmerLogin;
     FirebaseAuth firebaseAuth;
     TextView Clickregister;
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        startActivities(new Intent[]{new Intent(LoginFarmer.this, Home.class)});
-        finish();
-    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +61,6 @@ public class LoginFarmer extends AppCompatActivity {
                 }
 
                 // Use Firebase Authentication to authenticate the farmer
-                // Example code:
                 FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
                 firebaseAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(LoginFarmer.this, new OnCompleteListener<AuthResult>() {
@@ -90,5 +83,24 @@ public class LoginFarmer extends AppCompatActivity {
                         });
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Check if the user is already logged in on app launch
+        // If yes, redirect them to the main activity
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser() != null) {
+            startActivity(new Intent(LoginFarmer.this, MainActivity.class));
+            finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivities(new Intent[]{new Intent(LoginFarmer.this, Home.class)});
+        finish();
     }
 }

@@ -1,14 +1,13 @@
 package com.example.coffeecare;
 
-import com.google.firebase.database.IgnoreExtraProperties;
-
-@IgnoreExtraProperties
 public class User {
     private String chemicalname;
     private String description;
     private String industry;
 
+
     public User() {
+
     }
 
     public User(String chemicalname, String description, String industry) {

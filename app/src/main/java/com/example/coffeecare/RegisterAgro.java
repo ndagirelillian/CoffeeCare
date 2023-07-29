@@ -2,7 +2,6 @@ package com.example.coffeecare;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -39,6 +37,8 @@ public class RegisterAgro extends AppCompatActivity {
 
     private static final int REQUEST_LOCATION_PERMISSION = 1001;
 
+    private boolean isRequestingLocationUpdates = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +52,7 @@ public class RegisterAgro extends AppCompatActivity {
         locationbtn = findViewById(R.id.location);
         agrochemistRef = FirebaseDatabase.getInstance().getReference().child("agrochemists");
 
+        firebaseAuth = FirebaseAuth.getInstance();
 
         loginnow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +60,6 @@ public class RegisterAgro extends AppCompatActivity {
                 Intent intent = new Intent(RegisterAgro.this, LoginAgro.class);
                 startActivity(intent);
                 finish();
-
             }
         });
 
@@ -95,7 +95,6 @@ public class RegisterAgro extends AppCompatActivity {
                 }
 
                 // Use Firebase Authentication to register the agrochemist
-                firebaseAuth = FirebaseAuth.getInstance();
                 firebaseAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(RegisterAgro.this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -116,7 +115,7 @@ public class RegisterAgro extends AppCompatActivity {
     }
 
     private void saveAgrochemistToDatabase(String agrochemistId, String name, String email) {
-        // Get the user's location
+        // Get the User's location
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         try {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -134,8 +133,11 @@ public class RegisterAgro extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         // Agrochemist data saved to the database
                                         Toast.makeText(RegisterAgro.this, "Agrochemist information saved.", Toast.LENGTH_SHORT).show();
-                                        // Redirect to the login screen
-                                        Intent intent = new Intent(RegisterAgro.this, LoginAgro.class);
+                                        // Retrieve the user ID of the currently logged-in agrochemist
+                                        String userId = firebaseAuth.getCurrentUser().getUid();
+                                        // Proceed to the agrochemist's activity with the user ID
+                                        Intent intent = new Intent(getApplicationContext(), LoginAgro.class);
+                                        intent.putExtra("USER_ID", userId); // Pass the user ID to the next activity
                                         startActivity(intent);
                                         finish();
                                     } else {
@@ -145,7 +147,6 @@ public class RegisterAgro extends AppCompatActivity {
                                 }
                             });
                 } else {
-
                     Toast.makeText(RegisterAgro.this, "Location not available. Please enable GPS.", Toast.LENGTH_SHORT).show();
                 }
             } else {
@@ -161,6 +162,12 @@ public class RegisterAgro extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
         } else {
+            requestLocationUpdates();
+        }
+    }
+
+    private void requestLocationUpdates() {
+        if (!isRequestingLocationUpdates) {
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             try {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
@@ -169,11 +176,12 @@ public class RegisterAgro extends AppCompatActivity {
                         double latitude = location.getLatitude();
                         double longitude = location.getLongitude();
 
-                        // Save the user's current location to Firebase
+                        // Save the User's current location to Firebase
                         saveLocationToFirebase(latitude, longitude);
 
                         // Stop listening for further location updates
                         locationManager.removeUpdates(this);
+                        isRequestingLocationUpdates = false;
                     }
 
                     @Override
@@ -191,14 +199,17 @@ public class RegisterAgro extends AppCompatActivity {
                         // Empty implementation
                     }
                 });
+                isRequestingLocationUpdates = true;
             } catch (SecurityException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void saveLocationToFirebase(double latitude, double longitude) {
-        // Get the current user ID
+
+
+            private void saveLocationToFirebase(double latitude, double longitude) {
+        // Get the current User ID
         String agrochemistId = firebaseAuth.getCurrentUser().getUid();
 
         // Save the location to Firebase using the agrochemist ID
@@ -217,27 +228,7 @@ public class RegisterAgro extends AppCompatActivity {
                     }
                 });
     }
-
-
-//    private void requestLocationPermission() {
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
-//        } else {
-//            //get the user's location using LocationManager:
-//            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//            try {
-//                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//                if (location != null) {
-//                    double latitude = location.getLatitude();
-//                    double longitude = location.getLongitude();
-//
-//                } else {
-//
-//                    Toast.makeText(RegisterAgro.this, "Location not available. , enable GPS.", Toast.LENGTH_SHORT).show();
-//                }
-//            } catch (SecurityException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 }
+
+
+

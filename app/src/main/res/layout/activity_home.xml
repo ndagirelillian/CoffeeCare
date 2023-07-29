@@ -13,11 +13,17 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:text='WELCOME TO COFFEE CARE'
-        android:textColor="@color/black"
+        android:text='COFFEE CARE'
+        android:textColor="@color/amber7"
         android:textSize="30sp"
         android:padding="15dp"
         android:textStyle="bold" />
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/coffeecare"
+        android:scaleType="centerInside" />
 <!--    <TextView-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="wrap_content"-->

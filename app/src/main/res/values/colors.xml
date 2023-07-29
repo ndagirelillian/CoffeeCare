@@ -13,5 +13,9 @@
     <color name="amber4">#f59e0b</color>
     <color name="amber5">#b45309</color>
     <color name="amber6">#451a03</color>
+    <color name="blue1">#00b395</color>
 
+    <color name="blue">#c27d04</color>
+
+    <color name="amber7">#653d0e</color>
 </resources>

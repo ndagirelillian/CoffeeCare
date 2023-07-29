@@ -3,6 +3,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +13,13 @@ public class MainActivity extends AppCompatActivity {
     private Button homeButton;
     private Button predictionButton;
     private Button newsButton;
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(MainActivity.this, Home.class));
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

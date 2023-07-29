@@ -129,12 +129,16 @@ public class PredictionFragment extends Fragment {
             float confidence = outputFeature0.getFloatValue(predictedClass);
 
             // Ensure the confidence is between 0 and 100%
-            float confidencePercentage = Math.min(Math.max(confidence, 0.0f), 1.0f) * 100;
+            float confidencePercentage = Math.min(Math.max(confidence * 100, 0.0f), 100.0f);
 
             if (predictedClass == 0) {
                 result.setText("Healthy");
+                moreinfo.setVisibility(View.GONE);
             } else if (predictedClass == 1) {
-                result.setText("Coffee Leaf Rust Detected with Confidence: " + confidencePercentage + "%");
+                // Display the confidence with two decimal places
+                String confidenceString = String.format("%.2f", confidencePercentage);
+                result.setText("Coffee Leaf Rust Detected with Confidence: " + confidenceString + "%");
+                // result.setText("Coffee Leaf Rust Detected");
                 moreinfo.setVisibility(View.VISIBLE);
                 moreinfo.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -145,6 +149,7 @@ public class PredictionFragment extends Fragment {
                 });
             } else if (predictedClass == 2) {
                 result.setText("Not Coffee Leaf");
+                moreinfo.setVisibility(View.GONE);
             } else {
                 Toast.makeText(requireContext(), "Prediction Error", Toast.LENGTH_SHORT).show();
             }
@@ -154,10 +159,6 @@ public class PredictionFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
-
-
-
 
 }
 

@@ -36,28 +36,6 @@ public class DiseaseInformation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_disease_information);
 
-//        locateshopbtn = findViewById(R.id.btnLocateShops);
-        Viewtreatment = findViewById(R.id.viewChemicals);
-
-
-        Viewtreatment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DiseaseInformation.this, AgroCatelogue.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-
-//        locateshopbtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                locateAgrochemists();
-//
-//            }
-//        });
-
 
         int[] imageIds = {
                 R.drawable.rust1,
@@ -71,70 +49,4 @@ public class DiseaseInformation extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
-//    private void locateAgrochemists() {
-//        DatabaseReference agrochemistsRef = FirebaseDatabase.getInstance().getReference().child("agrochemists");
-//
-//        agrochemistsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for (DataSnapshot agrochemistSnapshot : snapshot.getChildren()) {
-//                    double agrochemistLatitude = agrochemistSnapshot.child("latitude").getValue(Double.class);
-//                    double agrochemistLongitude = agrochemistSnapshot.child("longitude").getValue(Double.class);
-//
-//                    // Display the agrochemist's location on the map using the latitude and longitude
-//                    // You can add markers or customize the map as needed.
-//                    // Here, we're assuming you have a MapActivity to display the map and markers.
-//                    Intent intent = new Intent(getApplicationContext(), MapActivity.class);
-//                    intent.putExtra("agrochemist_latitude", agrochemistLatitude);
-//                    intent.putExtra("agrochemist_longitude", agrochemistLongitude);
-//                    startActivity(intent);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Toast.makeText(DiseaseInformation.this, "Failed to retrieve agrochemists' locations.", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
 }
-
-//    private void locateAgrochemist() {
-//        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-//        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-//
-//        if (currentUser != null) {
-//            String agrochemistId = currentUser.getUid();
-//            DatabaseReference agrochemistRef = FirebaseDatabase.getInstance().getReference().child("agrochemists");
-//            DatabaseReference agrochemistLocationRef = agrochemistRef.child(agrochemistId);
-//
-//            agrochemistLocationRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                    if (snapshot.exists()) {
-//                        double agrochemistLatitude = snapshot.child("latitude").getValue(Double.class);
-//                        double agrochemistLongitude = snapshot.child("longitude").getValue(Double.class);
-//
-//                        Intent intent = new Intent(getApplicationContext(), MapActivity.class);
-//                        intent.putExtra("agrochemist_latitude", agrochemistLatitude);
-//                        intent.putExtra("agrochemist_longitude", agrochemistLongitude);
-//                        startActivity(intent);
-//                    } else {
-//                        Toast.makeText(DiseaseInformation.this, "Agrochemist location not found.", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError error) {
-//                    Toast.makeText(DiseaseInformation.this, "Failed to retrieve agrochemist location.", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        }
-//    }
-
-
-
-//    Make sure you've set up the Google Maps API in your project and have the
-//    necessary permissions and API keys configured in your AndroidManifest.xml file.
-
-

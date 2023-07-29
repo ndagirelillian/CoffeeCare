@@ -1,6 +1,9 @@
 package com.example.coffeecare;
 
 public class Agrochemist {
+    private String chemicalname;
+    private String description;
+    private String industry;
     private String agrochemistId;
     private String name;
     private String email;
@@ -11,13 +14,40 @@ public class Agrochemist {
         // Default constructor required for Firebase Realtime Database
     }
 
-    public Agrochemist(String agrochemistId, String name, String email, double latitude, double longitude) {
+    public Agrochemist(String chemicalname, String description, String industry,
+                       String agrochemistId, String name, String email,
+                       double latitude, double longitude) {
+        this.chemicalname = chemicalname;
+        this.description = description;
+        this.industry = industry;
         this.agrochemistId = agrochemistId;
         this.name = name;
         this.email = email;
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
+    public Agrochemist(String agrochemistId, String name, String email, double latitude, double longitude) {
+    }
+
+    public Agrochemist(String agrochemistChemicalname, String agrochemistdescription, String agrochemistIndustry) {
+
+    }
+
+    public String getChemicalname() {
+        return chemicalname;
+    }
+
+
+    public String getDescription() {
+        return description;
+    }
+
+
+    public String getIndustry() {
+        return industry;
+    }
+
 
     public String getAgrochemistId() {
         return agrochemistId;
@@ -58,4 +88,5 @@ public class Agrochemist {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
+
 }

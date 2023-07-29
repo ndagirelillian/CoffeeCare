@@ -13,17 +13,18 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:text='WELCOME DEAR AGROCHEMIST'
-        android:textColor="@color/black"
+        android:text=' AGROCHEMIST'
+        android:textColor="@color/amber7"
         android:textSize="25sp"
         android:textStyle="bold" />
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="centerInside"
-        android:src="@drawable/download" />
+        android:src="@drawable/coffeecare"
+        android:scaleType="centerInside" />
+
+
 
     <TextView
         android:layout_width="match_parent"
