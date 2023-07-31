@@ -43,9 +43,7 @@ public class Help extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut(); // Sign out the user
 
-                // Redirect the user back to the Home screen (or any other desired activity)
                 Intent intent = new Intent(Help.this, Home.class);
                 startActivity(intent);
                 finish();

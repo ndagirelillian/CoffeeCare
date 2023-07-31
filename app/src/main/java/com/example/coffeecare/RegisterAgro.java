@@ -9,6 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -104,6 +105,9 @@ public class RegisterAgro extends AppCompatActivity {
                                     if (user != null) {
                                         String agrochemistId = user.getUid();
                                         saveAgrochemistToDatabase(agrochemistId, name, email);
+
+                                        // Request location updates only after the user has been registered successfully
+                                        requestLocationUpdatesForAgrochemist();
                                     }
                                 } else {
                                     Toast.makeText(RegisterAgro.this, "Registration failed", Toast.LENGTH_SHORT).show();
@@ -162,11 +166,11 @@ public class RegisterAgro extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
         } else {
-            requestLocationUpdates();
+            requestLocationUpdatesForAgrochemist();
         }
     }
 
-    private void requestLocationUpdates() {
+    private void requestLocationUpdatesForAgrochemist() {
         if (!isRequestingLocationUpdates) {
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             try {
@@ -205,12 +209,17 @@ public class RegisterAgro extends AppCompatActivity {
             }
         }
     }
+    private void saveLocationToFirebase(double latitude, double longitude) {
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser == null) {
+            // The user is not authenticated, handle this case accordingly.
+            // For example, you might want to redirect them to the login screen.
+            Toast.makeText(RegisterAgro.this, "User not authenticated.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-
-
-            private void saveLocationToFirebase(double latitude, double longitude) {
         // Get the current User ID
-        String agrochemistId = firebaseAuth.getCurrentUser().getUid();
+        String agrochemistId = currentUser.getUid();
 
         // Save the location to Firebase using the agrochemist ID
         agrochemistRef.child(agrochemistId).child("latitude").setValue(latitude);
@@ -224,11 +233,44 @@ public class RegisterAgro extends AppCompatActivity {
                         } else {
                             // Failed to save location
                             Toast.makeText(RegisterAgro.this, "Failed to save location to Firebase.", Toast.LENGTH_SHORT).show();
+                            // You can also log the exception to get more details about the error
+                            Exception exception = task.getException();
+                            if (exception != null) {
+                                Log.e("FirebaseLocation", "Error saving location to Firebase", exception);
+                            }
                         }
                     }
                 });
     }
+
+
+//    private void saveLocationToFirebase(double latitude, double longitude) {
+//        // Get the current User ID
+//        String agrochemistId = firebaseAuth.getCurrentUser().getUid();
+//
+//        // Save the location to Firebase using the agrochemist ID
+//        agrochemistRef.child(agrochemistId).child("latitude").setValue(latitude);
+//        agrochemistRef.child(agrochemistId).child("longitude").setValue(longitude)
+//                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        if (task.isSuccessful()) {
+//                            // Location saved successfully
+//                            Toast.makeText(RegisterAgro.this, "Location saved to Firebase.", Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            // Failed to save location
+//                            Toast.makeText(RegisterAgro.this, "Failed to save location to Firebase.", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
+//    }
 }
+
+
+
+
+
+
 
 
 

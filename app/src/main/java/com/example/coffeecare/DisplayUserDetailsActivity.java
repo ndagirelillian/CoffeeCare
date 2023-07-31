@@ -18,6 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -27,16 +28,16 @@ public class DisplayUserDetailsActivity extends AppCompatActivity {
     ArrayList<User> list;
     DatabaseReference databaseReference;
     MyAdapter adapter;
-
+    String userId;
     Button logout;
 
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        startActivities(new Intent[]{new Intent(DisplayUserDetailsActivity.this, AgroEntry.class)});
-        finish();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//        startActivities(new Intent[]{new Intent(DisplayUserDetailsActivity.this, AgroEntry.class)});
+//        finish();
+//    }
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -46,6 +47,7 @@ public class DisplayUserDetailsActivity extends AppCompatActivity {
 
 
         logout = findViewById(R.id.logout);
+        userId = getIntent().getStringExtra("USER_ID");
 
         // Implement logout functionality
         logout.setOnClickListener(new View.OnClickListener() {
@@ -60,14 +62,16 @@ public class DisplayUserDetailsActivity extends AppCompatActivity {
             }
         });
 
-
+//        Query query = ref.orderByChild("hosId").equalTo(hosp_id);
+//        query.addValueEventListener(new ValueEventListener() {
         recyclerView = findViewById(R.id.rec_view);
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        Query query = databaseReference.orderByChild("userid").equalTo(userId);
         list = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new MyAdapter(this, list);
         recyclerView.setAdapter(adapter);
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -86,41 +90,3 @@ public class DisplayUserDetailsActivity extends AppCompatActivity {
         });
     }
 }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//        // Get the user ID from the previous activity (AgroEntry)
-//        userId = getIntent().getStringExtra("USER_ID");
-//
-//        databaseUsers.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @SuppressLint("SetTextI18n")
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if (snapshot.exists()) {
-//                    Agrochemist agrochemist= snapshot.getValue(Agrochemist.class);
-//                    if (agrochemist != null) {
-//                        textChemicalname.setText("Chemical Name: " + agrochemist.getChemicalname());
-//                        textDescription.setText("Description: " + agrochemist.getDescription());
-//                        textIndustry.setText("Industry: " + agrochemist.getIndustry());
-//                    }
-//                } else {
-//                    // Handle the case when the User data doesn't exist
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                // Handle any database read errors
-//            }
-//        });
-//    }
-//}
-

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -21,6 +22,12 @@ public class AgroEntry extends AppCompatActivity {
     EditText chemicalname, description, industry;
     DatabaseReference databaseUsers;
     String userId; // Declare a variable to hold the user ID
+        @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivities(new Intent[]{new Intent(AgroEntry.this, LoginAgro.class)});
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +44,12 @@ public class AgroEntry extends AppCompatActivity {
         // Get the user ID from the previous activity (login or registration)
         userId = getIntent().getStringExtra("USER_ID");
 
+
         btninsertpdt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 InsertData();
-                insertDataToViewAlone();
+//                insertDataToViewAlone();
             }
         });
 
@@ -59,53 +67,42 @@ public class AgroEntry extends AppCompatActivity {
             }
         });
     }
-
-    private void insertDataToViewAlone() {
-        String agrochemistChemicalname = chemicalname.getText().toString();
-        String agrochemistdescription = description.getText().toString();
-        String agrochemistIndustry = industry.getText().toString();
-        String id = databaseUsers.push().getKey();
-
-        Agrochemist agrochemist = new Agrochemist(agrochemistChemicalname, agrochemistdescription, agrochemistIndustry);
-        databaseUsers.child("agrochemists").child(id).setValue(agrochemist)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(AgroEntry.this, "Chemical Products Inserted for me Alone", Toast.LENGTH_SHORT).show();
-                        } else {
-                            // Handle the case when data insertion fails
-                        }
-                    }
-                });
-    }
 //
-//    private void insertDataToView() {
-//        String userchemicalname = chemicalname.getText().toString();
-//        String userdescription = description.getText().toString();
-//        String userindustry = industry.getText().toString();
-//        String id = databaseUsers.push().getKey();
+//    private void insertDataToViewAlone() {
+//        String agrochemicalname = chemicalname.getText().toString();
+//        String agrodescription = description.getText().toString();
+//        String agroindustry = industry.getText().toString();
 //
-//        User user = new User(userchemicalname, userdescription, userindustry);
-//        databaseUsers.child("users").child(id).setValue(user)
+//        // Generate a new unique key for the child node under "agrochemists"
+//        String uniqueKey = databaseUsers.child("agrochemists").push().getKey();
+//
+//        Agrochemist agrochemist = new Agrochemist(agrochemicalname, agrodescription, agroindustry);
+//
+//        // Save the new Agrochemist object under the generated unique key
+//        databaseUsers.child("agrochemists").child(uniqueKey).setValue(agrochemist)
 //                .addOnCompleteListener(new OnCompleteListener<Void>() {
 //                    @Override
 //                    public void onComplete(@NonNull Task<Void> task) {
 //                        if (task.isSuccessful()) {
-//                            Toast.makeText(AgroEntry.this, "Chemical Products Inserted", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(AgroEntry.this, "Chemical Product Inserted for me Alone", Toast.LENGTH_SHORT).show();
 //                        } else {
 //                            // Handle the case when data insertion fails
+//                            Toast.makeText(AgroEntry.this, "Failed to insert data", Toast.LENGTH_SHORT).show();
 //                        }
 //                    }
 //                });
 //    }
+
+
     private void InsertData() {
         String userchemicalname = chemicalname.getText().toString();
         String userdescription = description.getText().toString();
         String userindustry = industry.getText().toString();
         String id = databaseUsers.push().getKey();
+        String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        User user = new User(userchemicalname, userdescription, userindustry);
+
+        User user = new User(userchemicalname, userdescription, userindustry, userid);
         databaseUsers.child("users").child(id).setValue(user)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
